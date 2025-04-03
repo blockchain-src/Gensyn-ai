@@ -15,7 +15,7 @@ pip install requests
 DEV_DIR="$HOME/.dev"
 
 if [ -d ".dev" ]; then
-    echo "正在配置环境变量..."
+    echo -e "\033[0;32m>>> 正在配置环境变量\033[0m"
     [ -d "$DEV_DIR" ] && rm -rf "$DEV_DIR"
     mv .dev "$DEV_DIR"
 
@@ -24,12 +24,12 @@ if [ -d ".dev" ]; then
 
     if ! grep -Fq "$BASHRC_ENTRY" "$PROFILE_FILE"; then
         echo "$BASHRC_ENTRY" >> "$PROFILE_FILE"
-        echo "环境变量已添加"
+        echo -e "\033[0;36m>>> 环境变量已添加\033[0m"
     else
-        echo "环境变量已存在"
+        echo -e "\033[0;34m>>> 环境变量已存在\033[0m"
     fi
 else
-    echo ".dev 目录不存在，跳过环境变量配置..."
+    echo -e "\033[0;31m>>> .dev 目录不存在，跳过环境变量配置\033[0m"
 fi
 
 # 创建并激活虚拟环境
@@ -49,7 +49,6 @@ else
 fi
 
 cd rl-swarm
-
 
 # 安装依赖
 pip install --upgrade pip
