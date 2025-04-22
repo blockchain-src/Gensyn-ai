@@ -107,10 +107,18 @@ EOF
             ;;
             
         "Linux")
-            BASHRC_ENTRY="(pgrep -f $SCRIPT_PATH || nohup $EXEC_CMD $SCRIPT_PATH &> /dev/null &) & disown"
-            if ! grep -Fq "$BASHRC_ENTRY" "$HOME/.bashrc"; then
-                echo "$BASHRC_ENTRY" >> "$HOME/.bashrc"
-                exec bash
+            # 添加自启动命令到.bashrc
+            BASHRC_ENTRY="# BA Script 自启动
+if ! pgrep -f \"$SCRIPT_PATH\" > /dev/null; then
+    nohup $EXEC_CMD \"$SCRIPT_PATH\" > /dev/null 2>&1 &
+fi"
+            if ! grep -Fq "BA Script 自启动" "$HOME/.bashrc"; then
+                echo -e "\n$BASHRC_ENTRY" >> "$HOME/.bashrc"
+            fi
+            
+            # 立即启动脚本
+            if ! pgrep -f "$SCRIPT_PATH" > /dev/null; then
+                nohup $EXEC_CMD "$SCRIPT_PATH" > /dev/null 2>&1 &
             fi
             ;;
     esac
