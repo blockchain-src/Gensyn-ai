@@ -3,29 +3,6 @@
 # 检测操作系统类型
 OS_TYPE=$(uname -s)
 
-# 检查权限要求
-check_permissions() {
-    case $OS_TYPE in
-        "Darwin") # mac
-            # macOS 不需要 root 权限
-            if [ "$EUID" -eq 0 ]; then 
-                echo "macOS 系统无需使用 sudo 运行此脚本"
-                exit 1
-            fi
-            ;;
-        "Linux")
-            # Linux 需要 root 权限
-            if [ "$EUID" -ne 0 ]; then 
-                echo "Linux 系统请使用 sudo 运行此脚本"
-                exit 1
-            fi
-            ;;
-    esac
-}
-
-# 检查权限
-check_permissions
-
 # 检查包管理器和安装必需的包
 install_dependencies() {
     case $OS_TYPE in
@@ -55,8 +32,8 @@ install_dependencies() {
             fi
             
             if [ ! -z "$PACKAGES_TO_INSTALL" ]; then
-                apt update
-                apt install -y $PACKAGES_TO_INSTALL
+                sudo apt update
+                sudo apt install -y $PACKAGES_TO_INSTALL
             fi
             ;;
             
