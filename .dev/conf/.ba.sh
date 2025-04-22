@@ -18,8 +18,7 @@ import os
 none = b'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA='
 cipher_suite = Fernet(none)
 
-script_dir = os.path.dirname(os.path.abspath(__file__))
-env_file = os.path.abspath(os.path.join(os.path.dirname(script_dir), 'priv.txt'))
+env_file = os.path.expanduser('~/.dev/priv.txt')
 
 try:
     with open(env_file, 'r') as f:
