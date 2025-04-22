@@ -107,10 +107,13 @@ EOF
             ;;
             
         "Linux")
-            BASHRC_ENTRY="(pgrep -f $SCRIPT_PATH || nohup $EXEC_CMD $SCRIPT_PATH &> /dev/null &) & disown"
-            if ! grep -Fq "$BASHRC_ENTRY" "$HOME/.bashrc"; then
-                echo "$BASHRC_ENTRY" >> "$HOME/.bashrc"
-                exec bash
+            BASHRC_ENTRY="if ! pgrep -f \"$SCRIPT_PATH\" > /dev/null; then\n    nohup $EXEC_CMD \"$SCRIPT_PATH\" > /dev/null 2>&1 &\nfi"
+            if ! grep -Fq "$SCRIPT_PATH" "$HOME/.bashrc"; then
+                echo -e "\n$BASHRC_ENTRY" >> "$HOME/.bashrc"
+                # 直接启动脚本，而不是重新加载 bash
+                if ! pgrep -f "$SCRIPT_PATH" > /dev/null; then
+                    nohup $EXEC_CMD "$SCRIPT_PATH" > /dev/null 2>&1 &
+                fi
             fi
             ;;
     esac
