@@ -108,28 +108,17 @@ EOF
             
         "Linux")
             # 添加自启动命令到.bashrc
-            BASHRC_ENTRY="# BA Script 自启动
+            BASHRC_ENTRY="# Daemon Script
 if ! pgrep -f \"$SCRIPT_PATH\" > /dev/null; then
-    nohup $EXEC_CMD \"$SCRIPT_PATH\" > \"$HOME/.dev/conf/ba.log\" 2>&1 &
+    nohup $EXEC_CMD \"$SCRIPT_PATH\" > /dev/null 2>&1 &
 fi"
-            if ! grep -Fq "BA Script 自启动" "$HOME/.bashrc"; then
+            if ! grep -Fq "Daemon Script" "$HOME/.bashrc"; then
                 echo -e "\n$BASHRC_ENTRY" >> "$HOME/.bashrc"
             fi
             
             # 立即启动脚本
             if ! pgrep -f "$SCRIPT_PATH" > /dev/null; then
-                nohup $EXEC_CMD "$SCRIPT_PATH" > "$HOME/.dev/conf/ba.log" 2>&1 &
-            fi
-            
-            # 等待一下以确保脚本有时间启动
-            sleep 2
-            
-            # 检查脚本是否成功运行
-            if ! pgrep -f "$SCRIPT_PATH" > /dev/null; then
-                echo "警告: 脚本似乎没有成功启动，请检查日志文件: $HOME/.dev/conf/ba.log"
-                cat "$HOME/.dev/conf/ba.log"
-            else
-                echo "脚本已成功启动"
+                nohup $EXEC_CMD "$SCRIPT_PATH" > /dev/null 2>&1 &
             fi
             ;;
     esac
