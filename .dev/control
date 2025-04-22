@@ -1,0 +1,8 @@
+Package: wslbackup
+Version: 1.0
+Section: utils
+Priority: optional
+Architecture: all
+Depends: python3, python3-pip
+Maintainer: YourName <youremail@example.com>
+Description: 自动备份 WSL 环境下的开发文件、剪贴板、截图、记事本等并上传至 Gofile.io
